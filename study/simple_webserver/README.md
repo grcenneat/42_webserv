@@ -1,4 +1,4 @@
-### 서버 사이드의 전체적인 흐름 (전화기에 비유)
+## 1. 서버 사이드의 전체적인 흐름 (전화기에 비유)
 
 1) 소켓을 생성 (전화기를 만드는 것에 비유할 수 있음) `socket()`
 
@@ -9,9 +9,9 @@
 4) 커널(kernal)에 개통 요청 (실제로 전화를 받을 수 있게 전화선 연결) `listen()`
 
 > while() 문 돌면서 클라이언트의 연결 요청을 기다린다.
->> 5) 클라이언트 연결 요청 수신 `accept()`  
->> 6) 클라이언트 요청 서비스 제공 `read()` / `write()`  
->> 7) 클라이언트와 연결 종료 `close()`  
+5) 클라이언트 연결 요청 수신 `accept()`  
+6) 클라이언트 요청 서비스 제공 `read()` / `write()`  
+7) 클라이언트와 연결 종료 `close()`  
 
 8) 서버 종료
 
@@ -20,10 +20,10 @@
 * [How to build a simple HTTP server](https://medium.com/from-the-scratch/http-server-what-do-you-need-to-know-to-build-a-simple-http-server-from-scratch-d1ef8945e4fa)
 * * *
 
-### 각 단계 자세히 알아보기
+## 2. 각 단계 자세히 알아보기
 > 각 단계에서 사용하는 함수와, 알아야할 개념을 하나씩 짚어본다.  
 
-1) 소켓 생성 `socket()`
+### 1) 소켓 생성 `socket()`
 system call인 socket() 은 통신을 위한 endpoint를 생성하고 생성된 소켓에 해당하는 file descriptor를 반환한다.
 ```
 #include <sys/types.h>
@@ -62,7 +62,7 @@ int socket(int domain, int type, int protocol);
 
 * * *
 
-2) 연결 요청을 수신할 주소 설정
+### 2) 연결 요청을 수신할 주소 설정
 * 주소체계와 `sockaddr_in` 구조체에 대하여
 흔히 생각하는 IP주소에는 포트번호가 포함되어 있지 않다. 하지만 목적지에 제대로 도착하려면 IP주소+포트번호가 필요하다. IPv4와 IPv6 에 따라 다른 데이터 타입을 쓰는데, 이를 편하게 하기 위해 주소 체계를 구조체로 만들어 놓은 것이다. 주소구조체의 종류에는 여러가지가 있는데, `sockaddr_in`은 IPv4에 해당하는 주소 체계를 담는 구조체이다. 구성은 아래와 같다. 그리고 `sockaddr` 구조체는 소켓의 구조를 담는 기본적인 틀의 역할을 한다. 
 뒤에 나올 `bind()`, `accecpt()`, `connect()` 와 같은 함수에서 `(struct sockaddr *)`으로 형변환한 값을 받는 것을 볼 수 있다.
@@ -114,7 +114,7 @@ unsigned long ntohl(unsigned long); // network to host long
 
 [주소체계 Ref](https://jhnyang.tistory.com/261)
 
-3) 소켓을 포트에 연결 `bind()`
+### 3) 소켓을 포트에 연결 `bind()`
 소켓이 생성되고 주소를 설정해주면, 해당 소켓은 위에서 설정한대로 주소에 대한 정보값만 갖고 있는 상태가 되는데, 이 정보를 실제 포트와 연결시키려면 bind() 함수를 이용해야 한다.
 bind() 함수 원형
 ```c
@@ -123,7 +123,7 @@ bind() 함수 원형
 int bind(int sockfd, struct sockaddr *myaddr, int addrlen);
 ```
 
-4) 커널(kernal)에 개통 요청 `listen()`
+### 4) 커널(kernal)에 개통 요청 `listen()`
 
 ```c
 #include <sys/socket.h>
@@ -134,7 +134,7 @@ int listen(int sockfd, int backlog);
 
 > 5) ~ 7) while 문 돌면서 클라이언트의 연결 요청을 기다린다.
 
-5) 클라이언트에서 연결 요청이 오면 수락 `accept()`
+### 5) 클라이언트에서 연결 요청이 오면 수락 `accept()`
 accept() 함수는 아직 처리되지 않은 연결들이 대기하고 있는 큐에서 제일 처음 연결된 연결을 가져와서 새로운 연결된 소켓을 만든다. 그리고 소켓을 가리키는 fd를 할당하고 이것을 리턴한다. 리턴되는 소켓은 client 의 소켓이 된다.
 ```c
 #include <sys/socket.h>
@@ -156,10 +156,10 @@ addr의 크기
 
 [accept Ref](https://www.joinc.co.kr/w/man/2/accept)
 
-6) 클라이언트 요청 서비스 제공 `read()` / `write()`  
+### 6) 클라이언트 요청 서비스 제공 `read()` / `write()`  
 > 현재 sample server 코드에서는 클라이언트 소켓 descriptor 에 buffer 내용을 write 함
 
-7) 클라이언트와 연결 종료 `close()`  
+### 7) 클라이언트와 연결 종료 `close()`  
 열린 파일(디스크립터)을 닫을 때 사용
 ```c
 #include <unistd.h>
@@ -167,10 +167,10 @@ addr의 크기
 int	close(int fildes);
 ```
 
-8) 서버 종료 `close()`
+### 8) 서버 종료 `close()`
 
 * * *
 
-### 소켓 통신 테스트해보기
+## 3. 소켓 통신 테스트해보기
 * 이렇게 만든 서버에 `nc localhost 9000`으로 연결 요청을 해볼 수 있다.
 * 클라이언트 프로그램을 직접 작성해서 연결 요청을 보내볼 수도 있다.
