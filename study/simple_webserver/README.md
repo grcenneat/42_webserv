@@ -25,7 +25,7 @@
 
 ### 1) 소켓 생성 `socket()`
 system call인 socket() 은 통신을 위한 endpoint를 생성하고 생성된 소켓에 해당하는 file descriptor를 반환한다.
-```
+```c
 #include <sys/types.h>
 #include <sys/socket.h>
 
@@ -63,7 +63,7 @@ int socket(int domain, int type, int protocol);
 * * *
 
 ### 2) 연결 요청을 수신할 주소 설정
-* 주소체계와 `sockaddr_in` 구조체에 대하여
+* 주소체계와 `sockaddr_in` 구조체에 대하여.  
 흔히 생각하는 IP주소에는 포트번호가 포함되어 있지 않다. 하지만 목적지에 제대로 도착하려면 IP주소+포트번호가 필요하다. IPv4와 IPv6 에 따라 다른 데이터 타입을 쓰는데, 이를 편하게 하기 위해 주소 체계를 구조체로 만들어 놓은 것이다. 주소구조체의 종류에는 여러가지가 있는데, `sockaddr_in`은 IPv4에 해당하는 주소 체계를 담는 구조체이다. 구성은 아래와 같다. 그리고 `sockaddr` 구조체는 소켓의 구조를 담는 기본적인 틀의 역할을 한다. 
 뒤에 나올 `bind()`, `accecpt()`, `connect()` 와 같은 함수에서 `(struct sockaddr *)`으로 형변환한 값을 받는 것을 볼 수 있다.
 ```c
@@ -86,7 +86,7 @@ s_addr.sin_family = AF_INET;
 s_addr.sin_port = htons(PORT);
 s_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 ```
-`htonl()` 함수와 `htons()` 함수를 사용하고 있는 걸 볼 수 있는데, 
+`htonl()` 함수와 `htons()` 함수를 사용하고 있는 걸 볼 수 있는데,  
 sockaddr_in 구조체의 변수에 값을 대입할 때는 Network-btye Ordering(네트워크 바이트 순서)로 값을 변경한 다음 대입해야한다.
 #### 바이트 순서란?
 바이트 순서는 시스템이 내부적으로 데이터를 저장하는 방법을 의미하며, 크게 Big-Endian과 Little-Endian 방식으로 나뉜다.
@@ -115,7 +115,8 @@ unsigned long ntohl(unsigned long); // network to host long
 [주소체계 Ref](https://jhnyang.tistory.com/261)
 
 ### 3) 소켓을 포트에 연결 `bind()`
-소켓이 생성되고 주소를 설정해주면, 해당 소켓은 위에서 설정한대로 주소에 대한 정보값만 갖고 있는 상태가 되는데, 이 정보를 실제 포트와 연결시키려면 bind() 함수를 이용해야 한다.
+소켓이 생성되고 주소를 설정해주면, 해당 소켓은 위에서 설정한대로 주소에 대한 정보값만 갖고 있는 상태가 되는데, 이 정보를 실제 포트와 연결시키려면 bind() 함수를 이용해야 한다.  
+
 bind() 함수 원형
 ```c
 #include <sys/socket.h>
@@ -130,7 +131,7 @@ int bind(int sockfd, struct sockaddr *myaddr, int addrlen);
 
 int listen(int sockfd, int backlog);
 ```
-**backlog :** 대기열에 들어올 수 있는 연결 요청의 개수를 제한한다. queue가 꽉 찬 상태에서 연결 요청이 들어오면, 클라이언트는 ECONNREFUSED 메시지와 함께 에러를 반환받는다.
+**backlog :** 대기열에 들어올 수 있는 연결 요청의 개수를 제한한다. queue가 꽉 찬 상태에서 연결 요청이 들어오면, 클라이언트는 ECONNREFUSED 메시지와 함께 에러를 반환받는다.  
 
 > 5) ~ 7) while 문 돌면서 클라이언트의 연결 요청을 기다린다.
 
@@ -142,16 +143,16 @@ accept() 함수는 아직 처리되지 않은 연결들이 대기하고 있는 �
 int accept(int sockfd, struct sockaddr *addr, int *addrlen);
 ```
 
-**return value**
+**return value**  
 에러시 -1이 반환된다. 성공한다면 받아들인 소켓을 위한 fd를 반환한다.
 
-**sockfd**
+**sockfd**  
 socket() 로 만들어진 end-point(듣기 소켓)을 위한 file descriptor.
 
-**addr**  
+**addr**    
 sockaddr 구조체에 대한 포인터. 연결이 성공되면 이 구조체를 채워서 되돌려 주게 되고, 우리는 이 구조체의 정보를 이용해서 연결된 **클라이언트의** 인터넷 정보를 알아낼수 있다.
 
-**addrlen**  
+**addrlen**    
 addr의 크기
 
 [accept Ref](https://www.joinc.co.kr/w/man/2/accept)
