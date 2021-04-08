@@ -21,7 +21,7 @@ int select(int maxfd, fd_set *readfds, fd_set *writefds, ft_set *exceptfds, stru
 **exceptfds** : "예외가 발생했는지" 확인하고자 하는 소켓들의 정보.  
 **timeout**: 함수 호출 후, 무한대기 상태에 빠지지 않도록 대기 시간을 지정한다.  
 
-#### FD_SET
+### FD_SET
 FD_SET은 file descriptor 를 저장하는 구조체인데, 그냥 배열로 생각하면 편하다.
 
 | FD = 0 | 1    | 2    | 3    | 4    | ...  | Maxfd - 1 |
