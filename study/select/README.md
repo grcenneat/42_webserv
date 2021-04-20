@@ -21,14 +21,14 @@ int select(int maxfd, fd_set *readfds, fd_set *writefds, ft_set *exceptfds, stru
 **exceptfds** : "예외가 발생했는지" 확인하고자 하는 소켓들의 정보.  
 **timeout**: 함수 호출 후, 무한대기 상태에 빠지지 않도록 대기 시간을 지정한다.  
 
-### FD_SET
-FD_SET은 file descriptor 를 저장하는 구조체인데, 그냥 배열로 생각하면 편하다.
+### fd_set
+fd_set은 file descriptor 를 저장하는 구조체인데, 그냥 배열로 생각하면 편하다.
 
 | FD = 0 | 1    | 2    | 3    | 4    | ...  | Maxfd - 1 |
 | ------ | ---- | ---- | ---- | ---- | ---- | --------- |
 | 0      | 0    | 0    | 0    | 0    |      | 0         |
 
-select() 함수에서 해당 FD_SET에 변화가 발생하면 변화가 감지된 FD에 해당하는 bit가 1로 바뀐다.  
+select() 함수에서 해당 fd_set에 변화가 발생하면 변화가 감지된 FD에 해당하는 bit가 1로 바뀐다.  
 이 비트 배열의 조작을 편리하게 하기 위해 몇 가지 매크로 함수가 정의되어 있다.
 
 | 함수 선언                        | 기능                                                         |
