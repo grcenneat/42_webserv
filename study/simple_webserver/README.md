@@ -58,7 +58,9 @@ int socket(int domain, int type, int protocol);
 * TCP일 땐 IPPROTO_TCP
 * UDP일 땐 IPPROTO_UDP
 
-[socket 함수 Ref](https://man7.org/linux/man-pages/man2/socket.2.html)
+[socket 함수 Ref](https://man7.org/linux/man-pages/man2/socket.2.html)  
++) 더 알아보기  
+[setsockopt 함수 Ref](https://jhnyang.tistory.com/262)
 
 * * *
 
@@ -112,7 +114,9 @@ unsigned long htonl(unsigned long); // host to network long
 unsigned long ntohl(unsigned long); // network to host long
 ```
 
-[주소체계 Ref](https://jhnyang.tistory.com/261)
+[주소체계 Ref](https://jhnyang.tistory.com/261)  
++)  
+[요청을 수신할 주소 설정시 INADDR_ANY의 의미](http://grindawayat.blogspot.com/2015/05/inaddrany.html)
 
 ### 3) 소켓을 포트에 연결 `bind()`
 소켓이 생성되고 주소를 설정해주면, 해당 소켓은 위에서 설정한대로 주소에 대한 정보값만 갖고 있는 상태가 되는데, 이 정보를 실제 포트와 연결시키려면 bind() 함수를 이용해야 한다.  
