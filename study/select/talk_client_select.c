@@ -5,13 +5,14 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <arpa/inet.h>
 
 #define MAX 512
 
 char	quit[ ] = "exit";
 int	numClient=0;
 
-main(int argc, char *argv[ ])
+int main(int argc, char *argv[ ])
 {
 	int	connSock;
 	struct sockaddr_in s_addr;
@@ -62,7 +63,7 @@ main(int argc, char *argv[ ])
 		}
 		if(FD_ISSET(connSock, &read_fds)) {
 			if((n=read(connSock, rcvBuffer,sizeof(rcvBuffer))) !=0) {
-					rcvBuffer[n]='\0';
+					rcvBuffer[n - 1]='\0';
 					printf("receive[%s]\n", rcvBuffer);
 			}
 			if(strncmp(rcvBuffer, quit, 4) == 0) {

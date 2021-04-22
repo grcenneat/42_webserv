@@ -1,3 +1,19 @@
+> 간단한 서버와 클라이언트 코드를 통해 소켓 통신의 기본적인 원리를 알아본다.
+
+> 테스트방법
+```shell
+$ gcc -Wall -Werror -Wextra server.c -o server
+$ gcc -Wall -Werror -Wextra client.c -o client
+./server
+
+```
+
+```shell
+# 다른 콘솔에서
+./client
+received Data : hello, world
+```
+
 ## 1. 서버 사이드의 전체적인 흐름 (전화기에 비유)
 
 1) 소켓을 생성 (전화기를 만드는 것에 비유할 수 있음) `socket()`
@@ -44,7 +60,7 @@ int socket(int domain, int type, int protocol);
 * AF_INET6 (IPv6 protocol)
 
 > PF_INET은 프로토콜 패밀리, AF_INET은 주소 패밀리이다. 
-> 둘의 차이는 [여기](https://www.bangseongbeom.com/af-inet-vs-pf-inet.html#fn:bgnet-2) 참조
+> 둘의 차이는 [여기](https://www.bangseongbeom.com/af-inet-vs-pf-inet.html) 참조
 
 **type:** communication type(어떤 방식으로 통신할 것인지)
 
@@ -137,7 +153,7 @@ int listen(int sockfd, int backlog);
 ```
 **backlog :** 대기열에 들어올 수 있는 연결 요청의 개수를 제한한다. queue가 꽉 찬 상태에서 연결 요청이 들어오면, 클라이언트는 ECONNREFUSED 메시지와 함께 에러를 반환받는다.  
 
-> 5) ~ 7) while 문 돌면서 클라이언트의 연결 요청을 기다린다.
+> 5\) ~ 7) while 문 돌면서 클라이언트의 연결 요청을 기다린다.
 
 ### 5) 클라이언트에서 연결 요청이 오면 수락 `accept()`
 accept() 함수는 아직 처리되지 않은 연결들이 대기하고 있는 큐에서 제일 처음 연결된 연결을 가져와서 새로운 연결된 소켓을 만든다. 그리고 소켓을 가리키는 fd를 할당하고 이것을 리턴한다. 리턴되는 소켓은 client 의 소켓이 된다.

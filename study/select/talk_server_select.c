@@ -10,7 +10,7 @@
 char	quit[ ] = "exit";
 int	numClient=0;
 
-main(int argc, char *argv[ ])
+int main(int argc, char *argv[])
 {
 	int	connSock, listenSock;
 	struct sockaddr_in s_addr, c_addr;
@@ -67,7 +67,7 @@ main(int argc, char *argv[ ])
 		}
 		if(FD_ISSET(connSock, &read_fds)) {
 			if((n=read(connSock, rcvBuffer,sizeof(rcvBuffer)))!=0){
-				rcvBuffer[n]='\0';
+				rcvBuffer[n - 1]='\0';
 				printf("receive[%s]\n", rcvBuffer);
 			}
 			if(strncmp(rcvBuffer, quit, 4) == 0) {
