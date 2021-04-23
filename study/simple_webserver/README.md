@@ -76,8 +76,20 @@ int socket(int domain, int type, int protocol);
 
 [socket 함수 Ref](https://man7.org/linux/man-pages/man2/socket.2.html)  
 +) 더 알아보기  
-[setsockopt 함수 Ref](https://jhnyang.tistory.com/262)
+<details>
+<summary>setsockopt 함수</summary>
+setsockopt 함수는 소켓의 세부설정을 가능하게 하는 함수이다.
 
+`setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))`
+
+server 에서 먼저 close()를 호출할 경우 아래와 같은 연결 종료 handshaking 과정을 거친다.
+
+![closeHandshaking](../image/Webserv.png)
+여기서 TIME_WAIT 상태일 때 bind()를 시도하면, 같은 주소에 또 다른 소켓이 연결을 시도하므로 에러가 발생한다.  
+TIME_WAIT 상태에서도 포트번호를 재사용할 수 있도록 SO_REUSEADDR 옵션을 설정해 소켓의 속성을 변경해준다.
+[setsockopt 함수 Ref](https://jhnyang.tistory.com/262)  
+[SO_REUSEADDR Ref](https://m.blog.naver.com/PostView.nhn?blogId=cache798&logNo=130080237440&proxyReferer=https:%2F%2Fwww.google.com%2F)
+</details>
 * * *
 
 ### 2) 연결 요청을 수신할 주소 설정
