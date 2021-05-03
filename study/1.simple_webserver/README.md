@@ -79,11 +79,15 @@ int socket(int domain, int type, int protocol);
 +) 더 알아보기  
 <details>
 <summary>setsockopt 함수</summary>
-setsockopt 함수는 소켓의 세부설정을 가능하게 하는 함수이다.
-webserv 과제에서 이 함수를 아래와 같이 사용한다.  
+	
+setsockopt 함수는 소켓의 세부설정을 가능하게 하는 함수이다.   
+
+webserv 과제에서 이 함수를 아래와 같이 사용한다.   
+
 ```
 setsockopt(_fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int))
 ```   
+	
 `TIME_WAIT` 상태에서도 포트번호를 재할당할수 있도록 SO_REUSEADDR 옵션을 1로 설정한다는 의미인데...  
 
 이걸 왜 해야되냐면?  
